@@ -46,6 +46,25 @@
 			}
 		});
 
+		// to show completed work
+
+		todoApp.filter("checkedItems",function(){    //"checkedItems" is name of the filter, should be passed in as a string
+			return function(items, showCompleted){
+				var resultArr = [];
+
+				// first arg in forEach: collection need be iterated; second arg: each single element in this collection, like ng-repeat: "x in items"
+				angular.forEach(items,function(item){
+					if (item.done == false || showCompleted == true) {
+						resultArr.push(item);
+					}
+				});
+
+				return resultArr;
+			}
+		});
+
+		
+
 		
 
 
@@ -79,13 +98,15 @@
 			</tr>
 
 			<!-- action需要引号 -->
-			<tr ng-repeat = "item in model.items| filter: {done:false} | orderBy:'action'">
+			<tr ng-repeat = "item in model.items| checkedItems:showCompleted | orderBy:'action'">
 				<td>{{item.action}}</td>
 				<td><input type="checkbox" ng-model="item.done"></td>
 			</tr>
-			
-
 		</table>
+
+		<div class="checkbox-inline">
+			<label><input type="checkbox" ng-model="showCompleted">Show Completed </label>
+		</div>
 	</div>
 </body>
 </html>
